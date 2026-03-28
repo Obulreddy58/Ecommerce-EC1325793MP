@@ -1,0 +1,6 @@
+apiVersion: v2
+name: accounting
+description: Helm chart for accounting
+type: application
+version: 0.1.0
+appVersion: 1.12.0-accountingservice

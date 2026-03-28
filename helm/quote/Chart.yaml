@@ -1,0 +1,6 @@
+apiVersion: v2
+name: quote
+description: Helm chart for quote
+type: application
+version: 0.1.0
+appVersion: 1.12.0-quoteservice

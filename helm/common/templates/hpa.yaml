@@ -1,0 +1,23 @@
+{{- range .Values.hpas }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .name }}
+  labels:
+{{ toYaml .labels | indent 2 }}
+spec:
+  scaleTargetRef:
+    apiVersion: {{ .scaleTargetRef.apiVersion }}
+    kind: {{ .scaleTargetRef.kind }}
+    name: {{ .scaleTargetRef.name }}
+  minReplicas: {{ .minReplicas }}
+  maxReplicas: {{ .maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .targetCPUUtilizationPercentage }}
+---
+{{- end }}

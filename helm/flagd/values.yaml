@@ -1,0 +1,157 @@
+name: opentelemetry-demo-flagd
+service:
+  name: opentelemetry-demo-flagd
+  type: ClusterIP
+  port: 8013
+  targetPort: 8013
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-flagd
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-flagd
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: flagd
+  app.kubernetes.io/name: opentelemetry-demo-flagd
+replicaCount: 2
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-feature/flagd
+  tag: v0.11.1
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 75Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: FLAGD_METRICS_EXPORTER
+  value: otel
+- name: FLAGD_OTEL_COLLECTOR_URI
+  value: $(OTEL_COLLECTOR_NAME):4317
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts:
+- name: config-rw
+  mountPath: /etc/flagd
+initContainers:
+- command:
+  - sh
+  - -c
+  - cp /config-ro/demo.flagd.json /config-rw/demo.flagd.json && cat /config-rw/demo.flagd.json
+  image: busybox
+  name: init-config
+  volumeMounts:
+  - mountPath: /config-ro
+    name: config-ro
+  - mountPath: /config-rw
+    name: config-rw
+volumes:
+- name: config-rw
+  emptyDir: {}
+- configMap:
+    name: opentelemetry-demo-flagd-config
+  name: config-ro
+readinessProbe:
+  tcpSocket:
+    port: 8013
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 8013
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: false
+  annotations: {}
+  spec: {}
+configMaps:
+- name: opentelemetry-demo-flagd-config
+  data:
+    demo.flagd.json: "{\n  \"$schema\": \"https://flagd.dev/schema/v0/flags.json\"\
+      ,\n  \"flags\": {\n    \"productCatalogFailure\": {\n      \"description\":\
+      \ \"Fail product catalog service on a specific product\",\n      \"state\":\
+      \ \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n        \"off\"\
+      : false\n      },\n      \"defaultVariant\": \"off\"\n    },\n    \"recommendationServiceCacheFailure\"\
+      : {\n      \"description\": \"Fail recommendation service cache\",\n      \"\
+      state\": \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n      \
+      \  \"off\": false\n      },\n      \"defaultVariant\": \"off\"\n    },\n   \
+      \ \"adServiceManualGc\": {\n      \"description\": \"Triggers full manual garbage\
+      \ collections in the ad service\",\n      \"state\": \"ENABLED\",\n      \"\
+      variants\": {\n        \"on\": true,\n        \"off\": false\n      },\n   \
+      \   \"defaultVariant\": \"off\"\n    },\n    \"adServiceHighCpu\": {\n     \
+      \ \"description\": \"Triggers high cpu load in the ad service\",\n      \"state\"\
+      : \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n        \"off\"\
+      : false\n      },\n      \"defaultVariant\": \"off\"\n    },\n    \"adServiceFailure\"\
+      : {\n      \"description\": \"Fail ad service\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": true,\n        \"off\": false\n  \
+      \    },\n      \"defaultVariant\": \"off\"\n    },\n    \"kafkaQueueProblems\"\
+      : {\n      \"description\": \"Overloads Kafka queue while simultaneously introducing\
+      \ a consumer side delay leading to a lag spike\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": 100,\n        \"off\": 0\n      },\n\
+      \      \"defaultVariant\": \"off\"\n    },\n    \"cartServiceFailure\": {\n\
+      \      \"description\": \"Fail cart service\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": true,\n        \"off\": false\n  \
+      \    },\n      \"defaultVariant\": \"off\"\n    },\n    \"paymentServiceFailure\"\
+      : {\n      \"description\": \"Fail payment service charge requests\",\n    \
+      \  \"state\": \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n \
+      \       \"off\": false\n      },\n      \"defaultVariant\": \"off\"\n    },\n\
+      \    \"paymentServiceUnreachable\": {\n      \"description\": \"Payment service\
+      \ is unavailable\",\n      \"state\": \"ENABLED\",\n      \"variants\": {\n\
+      \        \"on\": true,\n        \"off\": false\n      },\n      \"defaultVariant\"\
+      : \"off\"\n    },\n    \"loadgeneratorFloodHomepage\": {\n      \"description\"\
+      : \"Flood the frontend with a large amount of requests.\",\n      \"state\"\
+      : \"ENABLED\",\n      \"variants\": {\n        \"on\": 100,\n        \"off\"\
+      : 0\n      },\n      \"defaultVariant\": \"off\"\n    },\n    \"imageSlowLoad\"\
+      : {\n      \"description\": \"slow loading images in the frontend\",\n     \
+      \ \"state\": \"ENABLED\",\n      \"variants\": {\n        \"10sec\": 10000,\n\
+      \        \"5sec\": 5000,\n        \"off\": 0\n      },\n      \"defaultVariant\"\
+      : \"off\"\n    }\n  }\n}\n"
+- name: opentelemetry-demo-flagd-config
+  data:
+    demo.flagd.json: "{\n  \"$schema\": \"https://flagd.dev/schema/v0/flags.json\"\
+      ,\n  \"flags\": {\n    \"productCatalogFailure\": {\n      \"description\":\
+      \ \"Fail product catalog service on a specific product\",\n      \"state\":\
+      \ \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n        \"off\"\
+      : false\n      },\n      \"defaultVariant\": \"off\"\n    },\n    \"recommendationServiceCacheFailure\"\
+      : {\n      \"description\": \"Fail recommendation service cache\",\n      \"\
+      state\": \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n      \
+      \  \"off\": false\n      },\n      \"defaultVariant\": \"off\"\n    },\n   \
+      \ \"adServiceManualGc\": {\n      \"description\": \"Triggers full manual garbage\
+      \ collections in the ad service\",\n      \"state\": \"ENABLED\",\n      \"\
+      variants\": {\n        \"on\": true,\n        \"off\": false\n      },\n   \
+      \   \"defaultVariant\": \"off\"\n    },\n    \"adServiceHighCpu\": {\n     \
+      \ \"description\": \"Triggers high cpu load in the ad service\",\n      \"state\"\
+      : \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n        \"off\"\
+      : false\n      },\n      \"defaultVariant\": \"off\"\n    },\n    \"adServiceFailure\"\
+      : {\n      \"description\": \"Fail ad service\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": true,\n        \"off\": false\n  \
+      \    },\n      \"defaultVariant\": \"off\"\n    },\n    \"kafkaQueueProblems\"\
+      : {\n      \"description\": \"Overloads Kafka queue while simultaneously introducing\
+      \ a consumer side delay leading to a lag spike\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": 100,\n        \"off\": 0\n      },\n\
+      \      \"defaultVariant\": \"off\"\n    },\n    \"cartServiceFailure\": {\n\
+      \      \"description\": \"Fail cart service\",\n      \"state\": \"ENABLED\"\
+      ,\n      \"variants\": {\n        \"on\": true,\n        \"off\": false\n  \
+      \    },\n      \"defaultVariant\": \"off\"\n    },\n    \"paymentServiceFailure\"\
+      : {\n      \"description\": \"Fail payment service charge requests\",\n    \
+      \  \"state\": \"ENABLED\",\n      \"variants\": {\n        \"on\": true,\n \
+      \       \"off\": false\n      },\n      \"defaultVariant\": \"off\"\n    },\n\
+      \    \"productCatalogFailure\": {\n      \"description\": \"Fail product catalog\
+      \ cache and call behavior\",\n      \"state\": \"ENABLED\",\n      \"variants\"\
+      : {\n        \"on\": true,\n        \"off\": false\n      },\n      \"defaultVariant\"\
+      : \"off\"\n    }\n  }\n}\n"

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: recommendation
+description: Helm chart for recommendation
+type: application
+version: 0.1.0
+appVersion: 1.12.0-recommendationservice

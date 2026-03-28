@@ -1,0 +1,66 @@
+name: opentelemetry-demo-shippingservice
+service:
+  name: opentelemetry-demo-shippingservice
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-shippingservice
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-shippingservice
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: shippingservice
+  app.kubernetes.io/name: opentelemetry-demo-shippingservice
+replicaCount: 2
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: 1.12.0-shippingservice
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 50m
+    memory: 10Mi
+  limits:
+    cpu: 200m
+    memory: 20Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: SHIPPING_SERVICE_PORT
+  value: '8080'
+- name: QUOTE_SERVICE_ADDR
+  value: http://opentelemetry-demo-quoteservice:8080
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: http://$(OTEL_COLLECTOR_NAME):4317
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts: []
+initContainers: []
+volumes: []
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: false
+  annotations: {}
+  spec: {}
+configMaps: []

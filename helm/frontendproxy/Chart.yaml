@@ -1,0 +1,6 @@
+apiVersion: v2
+name: frontendproxy
+description: Helm chart for frontendproxy
+type: application
+version: 0.1.0
+appVersion: 1.12.0-frontendproxy

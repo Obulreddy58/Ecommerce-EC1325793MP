@@ -1,0 +1,66 @@
+name: opentelemetry-demo-quoteservice
+service:
+  name: opentelemetry-demo-quoteservice
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-quoteservice
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-quoteservice
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: quoteservice
+  app.kubernetes.io/name: opentelemetry-demo-quoteservice
+replicaCount: 2
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: 1.12.0-quoteservice
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 100m
+    memory: 32Mi
+  limits:
+    cpu: 250m
+    memory: 40Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: QUOTE_SERVICE_PORT
+  value: '8080'
+- name: OTEL_PHP_AUTOLOAD_ENABLED
+  value: 'true'
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: http://$(OTEL_COLLECTOR_NAME):4318
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts: []
+initContainers: []
+volumes: []
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: false
+  annotations: {}
+  spec: {}
+configMaps: []

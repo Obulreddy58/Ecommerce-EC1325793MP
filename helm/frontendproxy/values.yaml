@@ -1,0 +1,111 @@
+name: opentelemetry-demo-frontendproxy
+service:
+  name: opentelemetry-demo-frontendproxy
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-frontendproxy
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-frontendproxy
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: frontendproxy
+  app.kubernetes.io/name: opentelemetry-demo-frontendproxy
+replicaCount: 2
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: 1.12.0-frontendproxy
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 100m
+    memory: 32Mi
+  limits:
+    cpu: 250m
+    memory: 50Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: ENVOY_PORT
+  value: '8080'
+- name: FLAGD_HOST
+  value: opentelemetry-demo-flagd
+- name: FLAGD_PORT
+  value: '8013'
+- name: FLAGD_UI_HOST
+  value: opentelemetry-demo-flagd
+- name: FLAGD_UI_PORT
+  value: '4000'
+- name: FRONTEND_HOST
+  value: opentelemetry-demo-frontend
+- name: FRONTEND_PORT
+  value: '8080'
+- name: GRAFANA_SERVICE_HOST
+  value: opentelemetry-demo-grafana
+- name: GRAFANA_SERVICE_PORT
+  value: '80'
+- name: IMAGE_PROVIDER_HOST
+  value: opentelemetry-demo-imageprovider
+- name: IMAGE_PROVIDER_PORT
+  value: '8081'
+- name: JAEGER_SERVICE_HOST
+  value: opentelemetry-demo-jaeger-query
+- name: JAEGER_SERVICE_PORT
+  value: '16686'
+- name: LOCUST_WEB_HOST
+  value: opentelemetry-demo-loadgenerator
+- name: LOCUST_WEB_PORT
+  value: '8089'
+- name: OTEL_COLLECTOR_HOST
+  value: $(OTEL_COLLECTOR_NAME)
+- name: OTEL_COLLECTOR_PORT_GRPC
+  value: '4317'
+- name: OTEL_COLLECTOR_PORT_HTTP
+  value: '4318'
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts: []
+initContainers: []
+volumes: []
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: true
+  name: frontend-proxy
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  spec:
+    ingressClassName: alb
+    rules:
+    - host: example.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: opentelemetry-demo-frontendproxy
+              port:
+                number: 8080
+configMaps: []

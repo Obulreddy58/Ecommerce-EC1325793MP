@@ -1,0 +1,66 @@
+name: opentelemetry-demo-emailservice
+service:
+  name: opentelemetry-demo-emailservice
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-emailservice
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-emailservice
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: emailservice
+  app.kubernetes.io/name: opentelemetry-demo-emailservice
+replicaCount: 2
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: 1.12.0-emailservice
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 100Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: EMAIL_SERVICE_PORT
+  value: '8080'
+- name: APP_ENV
+  value: production
+- name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+  value: http://$(OTEL_COLLECTOR_NAME):4318/v1/traces
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts: []
+initContainers: []
+volumes: []
+readinessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: false
+  annotations: {}
+  spec: {}
+configMaps: []

@@ -1,0 +1,12 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name | default .Values.name }}
+  labels:
+{{ toYaml .Values.templateLabels | indent 2 }}
+  annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+spec:
+{{ toYaml .Values.ingress.spec | indent 2 }}
+{{- end }}

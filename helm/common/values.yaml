@@ -1,0 +1,376 @@
+namespace:
+  name: ecommerce
+  labels:
+    app.kubernetes.io/name: ecommerce
+    app.kubernetes.io/part-of: ecommerce
+serviceAccount:
+  name: opentelemetry-demo
+  labels:
+    opentelemetry.io/name: opentelemetry-demo
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo
+    app.kubernetes.io/version: 1.12.0
+    app.kubernetes.io/part-of: opentelemetry-demo
+pdbs:
+- name: opentelemetry-demo-accountingservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-accountingservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-accountingservice
+- name: opentelemetry-demo-adservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-adservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-adservice
+- name: opentelemetry-demo-cartservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-cartservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-cartservice
+- name: opentelemetry-demo-checkoutservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-checkoutservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-checkoutservice
+- name: opentelemetry-demo-currencyservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-currencyservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-currencyservice
+- name: opentelemetry-demo-emailservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-emailservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-emailservice
+- name: opentelemetry-demo-flagd-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-flagd
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-flagd
+- name: opentelemetry-demo-frauddetectionservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frauddetectionservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frauddetectionservice
+- name: opentelemetry-demo-frontend-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frontend
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frontend
+- name: opentelemetry-demo-frontendproxy-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frontendproxy
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frontendproxy
+- name: opentelemetry-demo-imageprovider-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-imageprovider
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-imageprovider
+- name: opentelemetry-demo-kafka-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-kafka
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-kafka
+- name: opentelemetry-demo-loadgenerator-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-loadgenerator
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-loadgenerator
+- name: opentelemetry-demo-paymentservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-paymentservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-paymentservice
+- name: opentelemetry-demo-productcatalogservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-productcatalogservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-productcatalogservice
+- name: opentelemetry-demo-quoteservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-quoteservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-quoteservice
+- name: opentelemetry-demo-recommendationservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-recommendationservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-recommendationservice
+- name: opentelemetry-demo-shippingservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-shippingservice
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-shippingservice
+- name: opentelemetry-demo-valkey-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-valkey
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-valkey
+hpas:
+- name: opentelemetry-demo-accountingservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: accountingservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-accountingservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-adservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: adservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-adservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-cartservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: cartservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-cartservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-checkoutservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: checkoutservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-checkoutservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-currencyservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: currencyservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-currencyservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-emailservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: emailservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-emailservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-flagd
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: flagd
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-flagd
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-frauddetectionservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: frauddetectionservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-frauddetectionservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-frontend
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: frontend
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-frontend
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-frontendproxy
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: frontendproxy
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-frontendproxy
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-imageprovider
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: imageprovider
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-imageprovider
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-loadgenerator
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: loadgenerator
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-loadgenerator
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-paymentservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: paymentservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-paymentservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-productcatalogservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: productcatalogservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-productcatalogservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-quoteservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: quoteservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-quoteservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-recommendationservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: recommendationservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-recommendationservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-shippingservice
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: shippingservice
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-shippingservice
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+- name: opentelemetry-demo-valkey
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/component: valkey
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: opentelemetry-demo-valkey
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 90
+networkPolicy:
+  name: opentelemetry-demo-accountingservice-ingress
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-accountingservice
+  podSelector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-accountingservice
+  namespaceSelector:
+    matchLabels:
+      app.kubernetes.io/name: ecommerce

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  labels:
+{{ toYaml .Values.templateLabels | indent 2 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+{{ toYaml .Values.selectorLabels | indent 4 }}
+  ports:
+  - name: service
+    protocol: TCP
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}

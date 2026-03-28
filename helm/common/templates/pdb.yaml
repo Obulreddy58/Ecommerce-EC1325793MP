@@ -1,0 +1,13 @@
+{{- range .Values.pdbs }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .name }}
+  labels:
+{{ toYaml .labels | indent 2 }}
+spec:
+  minAvailable: {{ .minAvailable }}
+  selector:
+{{ toYaml .selector | indent 4 }}
+---
+{{- end }}

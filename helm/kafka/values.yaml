@@ -1,0 +1,66 @@
+name: opentelemetry-demo-kafka
+service:
+  name: opentelemetry-demo-kafka
+  type: ClusterIP
+  port: 9092
+  targetPort: 9092
+selectorLabels:
+  opentelemetry.io/name: opentelemetry-demo-kafka
+templateLabels:
+  opentelemetry.io/name: opentelemetry-demo-kafka
+  app.kubernetes.io/instance: opentelemetry-demo
+  app.kubernetes.io/component: kafka
+  app.kubernetes.io/name: opentelemetry-demo-kafka
+replicaCount: 1
+serviceAccountName: opentelemetry-demo
+image:
+  repository: ghcr.io/open-telemetry/demo
+  tag: 1.12.0-kafka
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: 300m
+    memory: 512Mi
+  limits:
+    cpu: 750m
+    memory: 600Mi
+env:
+- name: OTEL_SERVICE_NAME
+  valueFrom:
+    fieldRef:
+      apiVersion: v1
+      fieldPath: metadata.labels['app.kubernetes.io/component']
+- name: OTEL_COLLECTOR_NAME
+  value: opentelemetry-demo-otelcol
+- name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+  value: cumulative
+- name: KAFKA_ADVERTISED_LISTENERS
+  value: PLAINTEXT://opentelemetry-demo-kafka:9092
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: http://$(OTEL_COLLECTOR_NAME):4318
+- name: KAFKA_HEAP_OPTS
+  value: -Xmx400M -Xms400M
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+volumeMounts: []
+initContainers: []
+volumes: []
+readinessProbe:
+  tcpSocket:
+    port: 9092
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+livenessProbe:
+  tcpSocket:
+    port: 9092
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
+ingress:
+  enabled: false
+  annotations: {}
+  spec: {}
+configMaps: []

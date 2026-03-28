@@ -57,8 +57,26 @@ spec:
               value: -Xmx400M -Xms400M
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
+          readinessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
           resources:
+            requests:
+              cpu: 300m
+              memory: 512Mi
             limits:
+              cpu: 750m
               memory: 600Mi
           securityContext:
             runAsGroup: 1000

@@ -1,0 +1,247 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-accountingservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-accountingservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-accountingservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-adservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-adservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-adservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-cartservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-cartservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-cartservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-checkoutservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-checkoutservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-checkoutservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-currencyservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-currencyservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-currencyservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-emailservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-emailservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-emailservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-flagd-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-flagd
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-flagd
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-frauddetectionservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frauddetectionservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frauddetectionservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-frontend-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frontend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frontend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-frontendproxy-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-frontendproxy
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-frontendproxy
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-imageprovider-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-imageprovider
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-imageprovider
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-kafka-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-kafka
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-kafka
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-loadgenerator-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-loadgenerator
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-loadgenerator
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-paymentservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-paymentservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-paymentservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-productcatalogservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-productcatalogservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-productcatalogservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-quoteservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-quoteservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-quoteservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-recommendationservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-recommendationservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-recommendationservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-shippingservice-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-shippingservice
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-shippingservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: opentelemetry-demo-valkey-pdb
+  labels:
+    app.kubernetes.io/instance: opentelemetry-demo
+    app.kubernetes.io/name: opentelemetry-demo-valkey
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      opentelemetry.io/name: opentelemetry-demo-valkey
+---
