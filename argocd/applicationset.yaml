@@ -13,7 +13,7 @@ spec:
     spec:
       project: ecommerce
       source:
-        repoURL: 'https://github.com/your-org/your-repo.git'
+        repoURL: 'https://github.com/Obulreddy58/Ecommerce-EC1325793MP.git'
         targetRevision: HEAD
         path: '{{path}}'
       destination:
